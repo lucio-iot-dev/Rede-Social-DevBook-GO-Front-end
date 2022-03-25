@@ -17,6 +17,7 @@ type Rota struct {
 // Configurar coloca todas as rotas dentro do router
 func Configurar(router *mux.Router) *mux.Router {
 	rotas := rotasLogin
+	rotas = append(rotas, rotasUsuarios...) // Tem que colocar  ( ... ) porque é um slice de um slice ,e colocando os 3 pontinhos ele vai varrendo o slice e adicionando
 
 	for _, rota := range rotas {
 		router.HandleFunc(rota.URI, rota.Funcao).Methods(rota.Metodo)
