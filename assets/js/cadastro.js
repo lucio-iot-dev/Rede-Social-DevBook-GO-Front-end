@@ -21,6 +21,11 @@ function criarUsuario(evento) {
        senha: $(`#senha`).val()
 
      }
+   }).done(function() { // Ok 201  20  204
+       alert("Usuário cadastrado com sucesso!");
+   }).fail(function(erro) {  // Erros 400  404  401  403  500
+      console.log(erro);
+      alert("Erro ao cadastrar o usuário!");
    });
 
 }

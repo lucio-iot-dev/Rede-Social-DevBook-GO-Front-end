@@ -3,9 +3,9 @@ package controllers
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
+	"webapp/src/respostas"
 )
 
 //CriarUsuario chama a API para cadastrar um usuário no banco de dados
@@ -19,17 +19,24 @@ func CriarUsuario(w http.ResponseWriter, r *http.Request) {
 		"senha": r.FormValue("senha"),
 	})
 
-		if erro != nil {
-		log.Fatal(erro)
+	if erro != nil {
+		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
+				return
 	}
-	
+
 	//COMUNICAÇÃO DO FRONT-END COM O BACK-END////// NewBuffer tranforma de slice de byte para json
 	response, erro := http.Post("http://localhost:5000/usuarios", "application/json", bytes.NewBuffer(usuario))
 	if erro != nil {
-		log.Fatal(erro)
+		respostas.JSON(w, http.StatusInternalServerError, respostas.ErroAPI{Erro: erro.Error()})
+    return
 	}
 	defer response.Body.Close()
-	
-	fmt.Println(response.Body)
-}
 
+	if response.StatusCode >= 400 {
+		respostas.TratarStatusCodeDeErro(w, response)
+		return
+	}
+
+	respostas.JSON(w, response.StatusCode, nil)
+	return
+}
