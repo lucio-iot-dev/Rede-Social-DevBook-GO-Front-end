@@ -2,7 +2,7 @@ package rotas
 
 import (
 	"net/http"
-	// "webapp/src/rotas"
+
 	"github.com/gorilla/mux"
 )
 
@@ -23,7 +23,7 @@ func Configurar(router *mux.Router) *mux.Router {
 		router.HandleFunc(rota.URI, rota.Funcao).Methods(rota.Metodo)
 	}
 
-	fileServer := http.FileServer(http.Dir("./assets/"))
+	fileServer := http.FileServer(http.Dir("./assets"))
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fileServer))
 
 	return router
