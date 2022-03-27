@@ -1,6 +1,7 @@
 package main
 
 import (
+	// "encoding/hex"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,7 +9,17 @@ import (
 	"webapp/src/cookies"
 	"webapp/src/router"
 	"webapp/src/utils"
+
+	// "github.com/gorilla/securecookie"
 )
+//FUNÇÃO UTILIZADA SOMENTE UMA VEZ PARA GERAR AS CHAVES
+// func init() {
+// 	hashKey := hex.EncodeToString(securecookie.GenerateRandomKey(16))
+// 	fmt.Println(hashKey)
+
+// 	Blockkey := hex.EncodeToString(securecookie.GenerateRandomKey(16))
+// 	fmt.Println(Blockkey)
+// }
 
 func main() {
   config.Carregar()

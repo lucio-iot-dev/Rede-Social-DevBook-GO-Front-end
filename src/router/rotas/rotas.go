@@ -2,6 +2,7 @@ package rotas
 
 import (
 	"net/http"
+	"webapp/src/middlewares"
 
 	"github.com/gorilla/mux"
 )
@@ -18,9 +19,19 @@ type Rota struct {
 func Configurar(router *mux.Router) *mux.Router {
 	rotas := rotasLogin
 	rotas = append(rotas, rotasUsuarios...) // Tem que colocar  ( ... ) porque é um slice de um slice ,e colocando os 3 pontinhos ele vai varrendo o slice e adicionando
+	rotas = append(rotas, rotaPaginaPrincipal)
 
 	for _, rota := range rotas {
-		router.HandleFunc(rota.URI, rota.Funcao).Methods(rota.Metodo)
+    
+		if rota.RequerAutenticacao {
+			router.HandleFunc(rota.URI, middlewares.Logger(middlewares.Autenticar(rota.Funcao)),
+			).Methods(rota.Metodo)
+
+		} else {
+			router.HandleFunc(rota.URI,
+			middlewares.Logger(rota.Funcao),
+		).Methods(rota.Metodo)
+		}
 	}
 
 	fileServer := http.FileServer(http.Dir("./assets"))
