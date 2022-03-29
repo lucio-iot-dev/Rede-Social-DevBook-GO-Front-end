@@ -20,6 +20,8 @@ func Configurar(router *mux.Router) *mux.Router {
 	rotas := rotasLogin
 	rotas = append(rotas, rotasUsuarios...) // Tem que colocar  ( ... ) porque é um slice de um slice ,e colocando os 3 pontinhos ele vai varrendo o slice e adicionando
 	rotas = append(rotas, rotaPaginaPrincipal)
+	rotas = append(rotas, rotasPublicacoes...)
+
 
 	for _, rota := range rotas {
     
