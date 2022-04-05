@@ -1,14 +1,15 @@
 {{ define "curtidas" }}
-<span> {{ .Curtidas }} curtidas </span>
+<i class="fa-solid fa-heart curtir-publicacao"></i>
+<span> {{ .Curtidas }} </span>
 {{ end }}
 
 {{ define "editar" }}
-<a href="/editar">Editar Puplicação</a>
+<a href="/editar" style="text-decoration: none;"><i class="fa-solid fa-pen-to-square"></i></a>
 {{ end }}
 
 {{ define "deletar" }}
-<a href="/deletar">Deletar Puplicação</a>
-
+<a href="/deletar" style="text-decoration: none;"><i class="fa-solid fa-trash text-danger"></i></a> 
+<!--text-danger é uma função do bootstrap que deixa o texto vermelho-->
 {{ end }}
 
 {{ define "cabecalho-publicacao" }}
@@ -36,7 +37,7 @@
 
 {{ define "publicacao-sem-permissao" }}
 <div class="primaryln text-black p-4 rounded my-4" data-publicacao-id="{{ .ID }}">
-  {{ template "cabecalho-publicacao" .}}
+  {{ template "cabecalho-publicacao" . }}
   <p>
     {{ template "curtidas" . }}
   </p>
