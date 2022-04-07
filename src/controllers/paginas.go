@@ -54,16 +54,16 @@ func CarregarPaginaPrincipal(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExecutarTemplate(w, "home.html", struct {
 		Publicacoes []modelos.Publicacao
-		UsuarioID uint64
+		UsuarioID   uint64
 	}{
 		Publicacoes: publicacoes,
-		UsuarioID: usuarioID,
+		UsuarioID:   usuarioID,
 	})
 }
 
-// CarregarPaginaDeEdicaoDePublicacao carrega a página de edição de publicação
-func CarregarPaginaDeEdicaoDePublicacao(w http.ResponseWriter, r *http.Request) {
-  parametros := mux.Vars(r)
+// CarregarPaginaDeAtualizacaoDePublicacao carrega a página de edição de publicação
+func CarregarPaginaDeAtualizacaoDePublicacao(w http.ResponseWriter, r *http.Request) {
+	parametros := mux.Vars(r)
 	publicacaoID, erro := strconv.ParseUint(parametros["publicacaoId"], 10, 64)
 	if erro != nil {
 		respostas.JSON(w, http.StatusBadRequest, respostas.ErroAPI{Erro: erro.Error()})
