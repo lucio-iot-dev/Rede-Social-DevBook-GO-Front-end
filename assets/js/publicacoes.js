@@ -104,7 +104,10 @@ function atualizarPublicacao() {
       conteudo: $('#conteudo').val()
     }
   }).done(function() {
-    alert("Publicação editada com sucesso!");
+    Swal.fire('Sucesso!', 'Publicação criada com sucesso!', 'success')
+    .then(function() {
+      window.location = "/home";
+    })
   }).fail(function() {
     alert("Erro ao editar a publicação!")
   }).always(function() {
@@ -115,7 +118,15 @@ function atualizarPublicacao() {
 function deletarPublicacao(evento) {
   evento.preventDefault();
 
-  const elementoClicado = $(evento.target);
+  Swal.fire({
+    title: "Atenção!",
+    text: "Tem certeza que deseja excluir essa publicação? Essa ação é irreversível!",
+    showCancelButton: true,
+    cancelButtonText: "Cancelar",
+    icon: "warning"
+  }).then(function(confirmacao) {
+    if (!confirmacao.value) return;
+    const elementoClicado = $(evento.target);
   const publicacao = elementoClicado.closest('div')
   const publicacaoId = publicacao.data('publicacao-id');
 
@@ -131,5 +142,5 @@ function deletarPublicacao(evento) {
   }).fail(function() {
     alert("Erro ao excluir a publicacao!")
    });
-   
+  })
   } 
