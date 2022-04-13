@@ -10,11 +10,10 @@ function fazerLogin(evento) {
       email: $('#email').val(),
       senha: $('#senha').val(),
     }
-  }).done(function() { // Ok 201  20  204
+  }).done(function() {
     window.location = "/home";
-}).fail(function(erro) {  // Erros 400  404  401  403  500
-   console.log(erro);
-   alert("Usuário ou senha inválidos!");
+}).fail(function() {
+  Swal.fire("Ops...", "Usuários ou senhas incorretos!", "error");
 });
     
 }
