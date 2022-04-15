@@ -121,7 +121,6 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 
 	utils.ExecutarTemplate(w, "usuarios.html", usuarios)
 }
-
 // CarregarPerfilDoUsuario carrega a página do perfil do usuário
 func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)

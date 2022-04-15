@@ -10,7 +10,7 @@ import (
 	"webapp/src/requisicoes"
 )
 
-// Usuario representa um a pessoa utilizando a rede social
+// Usuario representa uma pessoa utilizando a rede social
 type Usuario struct {
 	ID          uint64       `json:"id"`
 	Nome        string       `json:"nome"`
