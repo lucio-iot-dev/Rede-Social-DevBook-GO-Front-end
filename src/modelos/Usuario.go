@@ -2,6 +2,7 @@ package modelos
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -33,10 +34,52 @@ func BuscarUsuarioCompleto(usuarioID uint64, r *http.Request) (Usuario, error) {
 	go BuscarSDeguindo(canalSeguindo, usuarioID, r)
 	go BuscarPublicacoes(canalPublicacoes, usuarioID, r)
 
-	return Usuario{}, nil
+	var (
+		usuario     Usuario
+		seguidores  []Usuario
+		seguindo    []Usuario
+		publicacoes []Publicacao
+	)
+
+	for i := 0; i < 4; i++ {
+		select {
+		case usuarioCarregado := <-canalUsuario:
+			if usuarioCarregado.ID == 0 {
+				return Usuario{}, errors.New("Erro ao buscar o usuário")
+			}
+
+			usuario = usuarioCarregado
+
+		case seguidoresCarregados := <-canalSeguidores:
+			if seguidoresCarregados == nil {
+				return Usuario{}, errors.New("Erro ao buscar os seguidores")
+			}
+
+			seguidores = seguidoresCarregados
+
+		case seguindoCarregados := <-canalSeguindo:
+			if seguindoCarregados == nil {
+				return Usuario{}, errors.New("Erro ao buscar quem o usuário está seguindo")
+			}
+
+			seguindo = seguindoCarregados
+
+		case publicacoesCarregadas := <-canalPublicacoes:
+			if publicacoesCarregadas == nil {
+				return Usuario{}, errors.New("Erro ao buscar as publicações")
+			}
+
+			publicacoes = publicacoesCarregadas
+		}
+	}
+
+	usuario.Seguidores = seguidores
+	usuario.Seguindo = seguindo
+	usuario.Publicacoes = publicacoes
+
+	return usuario, nil
 
 }
-
 
 // BuscarDadosDoUsuario chama a API para buscar os dados base do usuário
 func BuscarDadosDoUsuario(canal chan<- Usuario, usuarioID uint64, r *http.Request) {
@@ -56,7 +99,6 @@ func BuscarDadosDoUsuario(canal chan<- Usuario, usuarioID uint64, r *http.Reques
 
 	canal <- usuario
 }
-
 
 // BuscarSeguidores chama a API para buscar os seguidores do usuário
 func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
@@ -82,7 +124,6 @@ func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request)
 	canal <- seguidores
 }
 
-
 // BuscarSeguindo chama a API para buscar os usuários seguidos por um usuário
 func BuscarSDeguindo(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/seguindo", config.APIURL, usuarioID)
@@ -107,7 +148,6 @@ func BuscarSDeguindo(canal chan<- []Usuario, usuarioID uint64, r *http.Request) 
 	canal <- seguindo
 }
 
-
 // BuscarPublicacoes chama a API para buscar as publicações de um usuário
 func BuscarPublicacoes(canal chan<- []Publicacao, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/publicacoes", config.APIURL, usuarioID)
@@ -131,5 +171,3 @@ func BuscarPublicacoes(canal chan<- []Publicacao, usuarioID uint64, r *http.Requ
 
 	canal <- publicacoes
 }
-
-
