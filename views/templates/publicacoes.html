@@ -3,7 +3,7 @@
 <span> {{ .Curtidas }} </span>
 {{ end }} {{ define "editar" }}
 <a href="/publicacoes/{{ .ID }}/atualizar" style="text-decoration: none"
-  ><i class="fa-solid fa-pen-to-square"></i
+  ><i class="fas fa-edit"></i
 ></a>
 {{ end }} 
 {{ define "deletar" }}
@@ -11,9 +11,9 @@
   <i class="fa-solid fa-trash text-danger deletar-publicacao" style="cursor:pointer;"></i>
 <!--text-danger é uma função do bootstrap que deixa o texto vermelho-->
 {{ end }} {{ define "cabecalho-publicacao" }}
-<h1>{{ .Titulo }}</h1>
+<h1 class="display-4">{{ .Titulo }}</h1>
 <p class="lead">{{ .Conteudo }}</p>
-<a href="#">{{ .AutorNick }} - {{ .CriadoEm.Format "02/01/2006" }}</a>
+<a href="/usuarios/{{ .AutorID }}">{{ .AutorNick }} - {{ .CriadoEm.Format "02/01/2006" }}</a>
 <!--
        Formatação de hora padrão do Go
        Jan 2 15:04:05 2006
