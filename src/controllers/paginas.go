@@ -122,7 +122,6 @@ func CarregarPaginaDeUsuarios(w http.ResponseWriter, r *http.Request) {
 	utils.ExecutarTemplate(w, "usuarios.html", usuarios)
 }
 
-
 // CarregarPerfilDoUsuario carrega a página do perfil do usuário
 func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 	parametros := mux.Vars(r)
@@ -141,13 +140,12 @@ func CarregarPerfilDoUsuario(w http.ResponseWriter, r *http.Request) {
 	cookie, _ := cookies.Ler(r)
 	usuarioLogadoID, _ := strconv.ParseUint(cookie["id"], 10, 64)
 
-  utils.ExecutarTemplate(w, "usuario.html", struct {
+	utils.ExecutarTemplate(w, "usuario.html", struct {
 		Usuario         modelos.Usuario
 		UsuarioLogadoID uint64
 	}{
 		Usuario:         usuario,
 		UsuarioLogadoID: usuarioLogadoID,
 	})
-
 
 }

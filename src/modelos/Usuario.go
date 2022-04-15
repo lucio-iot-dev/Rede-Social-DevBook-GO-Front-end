@@ -31,7 +31,7 @@ func BuscarUsuarioCompleto(usuarioID uint64, r *http.Request) (Usuario, error) {
 
 	go BuscarDadosDoUsuario(canalUsuario, usuarioID, r)
 	go BuscarSeguidores(canalSeguidores, usuarioID, r)
-	go BuscarSDeguindo(canalSeguindo, usuarioID, r)
+	go BuscarSeguindo(canalSeguindo, usuarioID, r)
 	go BuscarPublicacoes(canalPublicacoes, usuarioID, r)
 
 	var (
@@ -125,7 +125,7 @@ func BuscarSeguidores(canal chan<- []Usuario, usuarioID uint64, r *http.Request)
 }
 
 // BuscarSeguindo chama a API para buscar os usuários seguidos por um usuário
-func BuscarSDeguindo(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
+func BuscarSeguindo(canal chan<- []Usuario, usuarioID uint64, r *http.Request) {
 	url := fmt.Sprintf("%s/usuarios/%d/seguindo", config.APIURL, usuarioID)
 	response, erro := requisicoes.FazerRequisicaoComAutenticacao(r, http.MethodGet, url, nil)
 	if erro != nil {
