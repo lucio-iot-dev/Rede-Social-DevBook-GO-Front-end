@@ -24,5 +24,11 @@ import (
 		Funcao:             controllers.CarregarPaginaDeUsuarios,
 		RequerAutenticacao: true,
 	},
+	{
+		URI:                "/usuarios/{usuarioId}",
+		Metodo:             http.MethodGet,
+		Funcao:             controllers.CarregarPerfilDoUsuario,
+		RequerAutenticacao: true,
+	},
 
  }
